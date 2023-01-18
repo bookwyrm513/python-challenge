@@ -25,24 +25,30 @@ with open(election_csv, 'r') as election_data:
             vote_dict[str(row[2])] = 1
     print(vote_dict)
 
+    #calculate the percentage vote each candidate accumulated and add to new dict
     percentages = {}
     for candidate in vote_dict:
         percentages[candidate] = round(vote_dict[candidate] / total_votes * 100, 3)
 
+    #print results
     print('')
     print('Election Results')
     print('-------------------------')
     print(f'Total Votes: {total_votes}')
     print('-------------------------')
+    #for each candidate, print the percentage vote and total vote in parenthesis
     for keys in vote_dict:
         print(f'{keys}: {percentages[keys]}% ({vote_dict[keys]})')
     print('-------------------------')
+    #print key with most accumulated votes (code from: https://stackoverflow.com/questions/268272/getting-key-with-maximum-value-in-dictionary)
     print(f'Winner: {max(vote_dict, key=vote_dict.get)}')
     print('-------------------------')
     print('')
 
+#open output file stream
 output = os.path.join('analysis', 'Election Results.txt')
 with open(output, 'w') as text:
+    #print results to text file in same method as the print statements above
     text.write('Election Results\n')
     text.write('-------------------------\n')
     text.write(f'Total Votes: {total_votes}\n')

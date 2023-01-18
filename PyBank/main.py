@@ -40,6 +40,7 @@ with open(budget_csv, 'r') as budget_data:
     #find the average change
     avg_change = total_change / months
 
+    #print results into command terminal
     print('')
     print('Financial Analysis')
     print('----------------------------')
@@ -50,6 +51,7 @@ with open(budget_csv, 'r') as budget_data:
     print(f'Greatest Decrease in Profits: {min_date} (${min_change})')
     print('')
 
+#create and open text file to print results to in same method of print statements above
 output = os.path.join('analysis', 'Financial Analysis.txt')
 with open(output, 'w') as text:
     text.write('Financial Analysis\n')

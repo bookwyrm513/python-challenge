@@ -3,7 +3,7 @@ import os
 import csv
 
 #set the path that is needed
-budget_csv = os.path.join("Resources", "budget_data.csv")
+budget_csv = os.path.join('Resources', 'budget_data.csv')
 
 #open stream for budget_csv
 with open(budget_csv, 'r') as budget_data:
@@ -11,11 +11,10 @@ with open(budget_csv, 'r') as budget_data:
     csvreader = csv.reader(budget_data, delimiter=',')
     #get the header of the csv
     csvheader = next(csvreader)
-    print(csvheader)
     
     months = 0
     revenue = 0
-    profit_loss = []
+    total_change = 0
     j = 0
     max_change = 0
     max_date = None
@@ -27,25 +26,36 @@ with open(budget_csv, 'r') as budget_data:
         #tally up revenue from the second column in each row
         revenue += int(row[1])
         #append the change from last row to current row to a list then update last row
-        profit_loss.append(int(row[1]) - int(j))
-        if (int(row[1]) - int(j)) > int(max_change):
+        change = int(row[1]) - int(j)
+        #tally total change as well
+        total_change += change
+        if change > int(max_change):
             max_date = row[0]
-            max_change = row[1]
-        elif (int(row[1]) - int(j)) < int(min_change):
+            max_change = change
+        elif change < int(min_change):
             min_date = row[0]
-            min_change = row[1]
+            min_change = change
         j = row[1]
-    
-    #total all changes
-    total_change = sum(profit_loss)
     
     #find the average change
     avg_change = total_change / months
 
-    print(months)
-    print(revenue)
-    print(avg_change)
-    print(max_date)
-    print(max_change)
-    print(min_date)
-    print(min_change)
+    print('')
+    print('Financial Analysis')
+    print('----------------------------')
+    print(f'Total Months: {months}')
+    print(f'Total: ${revenue}')
+    print(f'Average Change: ${round(avg_change, 2)}')
+    print(f'Greatest Increase in Profits: {max_date} (${max_change})')
+    print(f'Greatest Decrease in Profits: {min_date} (${min_change})')
+    print('')
+
+output = os.path.join('analysis', 'Financial Analysis.txt')
+with open(output, 'w') as text:
+    text.write('Financial Analysis\n')
+    text.write('----------------------------\n')
+    text.write(f'Total Months: {months}\n')
+    text.write(f'Total: ${revenue}\n')
+    text.write(f'Average Change: ${round(avg_change, 2)}\n')
+    text.write(f'Greatest Increase in Profits: {max_date} (${max_change})\n')
+    text.write(f'Greatest Decrease in Profits: {min_date} (${min_change})\n')
